@@ -23,7 +23,7 @@ export default function BrandStoryPage() {
       {/* 1. Hero Video / Mobile Image Section */}
       <section className="relative w-full h-[400px] sm:h-[480px] lg:h-[560px] overflow-hidden flex items-center justify-center bg-black">
         {/* Tablet / Pad & Desktop Video (>= sm) */}
-        <div className="hidden sm:block absolute inset-0 w-full h-full -z-10">
+        <div className="hidden sm:block absolute inset-0 w-full h-full z-0">
           <SmartVideo
             assetKey={hero.videoAssetKey}
             className="w-full h-full object-cover brightness-[0.7]"
@@ -32,7 +32,7 @@ export default function BrandStoryPage() {
         </div>
 
         {/* Small Devices Only (< sm / phones) -> replaced with 1.jpg */}
-        <div className="block sm:hidden absolute inset-0 w-full h-full -z-10">
+        <div className="block sm:hidden absolute inset-0 w-full h-full z-0">
           <SmartImage
             assetKey="brand.hero.mobileImage"
             fill
@@ -42,7 +42,7 @@ export default function BrandStoryPage() {
           />
         </div>
 
-        <div className="absolute inset-0 bg-black/40 -z-10" />
+        <div className="absolute inset-0 bg-black/40 z-[1]" />
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white drop-shadow-md text-center px-4">
           {hero.title}

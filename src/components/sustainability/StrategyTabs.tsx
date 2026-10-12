@@ -67,7 +67,7 @@ export function StrategyTabs() {
             return (
               <div
                 key={tab.id}
-                className={`absolute inset-0 transition-opacity duration-500 -z-10 ${
+                className={`absolute inset-0 transition-opacity duration-500 z-0 ${
                   isActive ? "opacity-100" : "opacity-0 pointer-events-none"
                 }`}
               >
