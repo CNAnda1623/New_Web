@@ -158,8 +158,13 @@ export default function RegisterPage() {
     setErrorMsg(null);
     setInfoMsg(null);
     try {
-      await sendCode({ email, purpose: "register" }).unwrap();
-      setInfoMsg("Verification code sent to your email!");
+      const res = await sendCode({ email, purpose: "register" }).unwrap();
+      if (res.devCode) {
+        setInfoMsg(`Verification code: ${res.devCode} (automatically entered for local testing)`);
+        setCode(res.devCode);
+      } else {
+        setInfoMsg("Verification code sent to your email!");
+      }
       dispatch(codeSent());
     } catch (err: unknown) {
       const errorObj = err as { message?: string };

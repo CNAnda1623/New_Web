@@ -53,6 +53,7 @@ export interface DeleteAccountRequest {
 export interface BasicResponse {
   success: boolean;
   message?: string;
+  devCode?: string;
 }
 
 export interface LoginResponse {

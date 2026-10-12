@@ -39,9 +39,14 @@ export async function POST(req: Request) {
     saveVerificationCode(email, code, purpose);
     await sendEmailCode(email, code, purpose);
 
+    const hasLiveMailer = process.env.NODE_ENV === "production" && !!process.env.RESEND_API_KEY;
+
     return NextResponse.json({
       success: true,
-      message: "Verification code sent to your email.",
+      message: hasLiveMailer
+        ? "Verification code sent to your email."
+        : "Verification code sent! (Dev test code displayed)",
+      devCode: hasLiveMailer ? undefined : code,
     });
   } catch (err) {
     console.error("send-code error:", err);

@@ -227,14 +227,14 @@ export default function ResidentialSolutionPage() {
       {/* 10. Our Products (Single Product: iSolarCloud) */}
       <section className="py-20 lg:py-28 bg-[#f5f5f5]">
         <Container>
-          <SectionHeading
-            title={products.heading}
-            align="center"
-            className="mb-12"
-          />
+          <div className="flex flex-col items-start w-full">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-neutral-900 tracking-tight mb-10 text-left">
+              {products.heading}
+            </h2>
 
-          <div className="max-w-md mx-auto">
-            <ProductCard product={products.item} />
+            <div className="w-full max-w-[360px] sm:max-w-[380px]">
+              <ProductCard product={products.item} />
+            </div>
           </div>
         </Container>
       </section>

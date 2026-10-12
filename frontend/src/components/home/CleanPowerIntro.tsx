@@ -2,7 +2,6 @@
 
 import React from "react";
 import { homeData } from "@/data/home";
-import { SectionHeading } from "../ui/SectionHeading";
 import { ScrollRevealText } from "../ui/ScrollRevealText";
 import { Counter } from "../ui/Counter";
 import { Button } from "../ui/Button";

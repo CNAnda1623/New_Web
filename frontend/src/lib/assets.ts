@@ -503,9 +503,9 @@ export const assets: Record<string, AssetEntry> = {
   "residential.product": {
     id: "R-05",
     kind: "image",
-    src: "/Images/residential_PV_solution/4dfe450f-fd27-44cd-b28a-c550053422bd.webp",
-    width: 450,
-    height: 373,
+    src: "/Images/residential_PV_solution/iSolarCloud.png",
+    width: 600,
+    height: 600,
     alt: "iSolarCloud Platform",
   },
 

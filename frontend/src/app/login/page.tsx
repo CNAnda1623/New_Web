@@ -70,8 +70,13 @@ export default function LoginPage() {
     setErrorMsg(null);
     setInfoMsg(null);
     try {
-      await sendCode({ email, purpose: "login" }).unwrap();
-      setInfoMsg("Verification code sent to your email!");
+      const res = await sendCode({ email, purpose: "login" }).unwrap();
+      if (res.devCode) {
+        setInfoMsg(`Verification code: ${res.devCode} (automatically entered for local testing)`);
+        setCode(res.devCode);
+      } else {
+        setInfoMsg("Verification code sent to your email!");
+      }
       setResendCooldown(60);
     } catch (err: unknown) {
       const errorObj = err as { message?: string };

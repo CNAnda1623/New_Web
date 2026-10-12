@@ -17,36 +17,40 @@ export interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between items-center text-center">
+    <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between items-start text-left w-full">
+      {/* Category on Top */}
+      <div className="mb-3">
+        <span className="text-xs sm:text-sm font-medium text-[#fe7900]">
+          {product.category}
+        </span>
+      </div>
+
       {/* Product Image */}
-      <div className="w-full h-[220px] sm:h-[240px] relative mb-6 flex items-center justify-center p-4">
+      <div className="w-full h-[220px] sm:h-[240px] relative mb-4 flex items-center justify-center p-2">
         <SmartImage
           assetKey={product.assetKey}
-          width={260}
-          height={260}
+          width={360}
+          height={280}
           className="max-h-full w-auto object-contain"
           alt={product.name}
         />
       </div>
 
-      {/* Category & Title */}
-      <div className="mb-8">
-        <span className="text-xs uppercase tracking-wider font-semibold text-[#fe7900] mb-2 block">
-          {product.category}
-        </span>
-        <h3 className="text-lg sm:text-xl font-medium text-neutral-900 leading-snug">
+      {/* Title */}
+      <div className="mb-6 w-full">
+        <h3 className="text-2xl sm:text-[28px] font-normal text-neutral-900 leading-tight">
           {product.name}
         </h3>
       </div>
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3 w-full">
+      {/* Stacked Full-Width Buttons */}
+      <div className="flex flex-col gap-3 w-full">
         <Button
           href={product.learnMoreUrl}
           isExternal={true}
           variant="outline-grey"
-          size="sm"
-          className="w-full"
+          size="md"
+          className="w-full rounded-full justify-center text-sm py-2.5 font-normal text-neutral-800 hover:text-black border-neutral-300"
         >
           Learn More
         </Button>
@@ -54,8 +58,8 @@ export function ProductCard({ product }: ProductCardProps) {
           href={product.docUrl}
           isExternal={true}
           variant="outline-grey"
-          size="sm"
-          className="w-full text-[11px]"
+          size="md"
+          className="w-full rounded-full justify-center text-sm py-2.5 font-normal text-neutral-800 hover:text-black border-neutral-300"
         >
           Documents & Installation
         </Button>
