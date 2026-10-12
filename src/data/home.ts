@@ -16,7 +16,7 @@ export const homeData = {
     },
     mobileSlideB: {
       headline: "Sungrow No.1 in Global Inverter Bankability",
-      sublines: ["Fortune Future 69", "AAA MSCI ESG Rating in 2025"],
+      sublines: ["Fortune Future 50", "AAA MSCI ESG Rating in 2025"],
       stat: "75 GW⁺",
       statLabel: "India Shipments of PV Inverters",
       assetKey: "home.hero.mobileBanner",
@@ -26,7 +26,7 @@ export const homeData = {
 
   statsBanner: {
     badge: "Sungrow No.1 in Global Inverter Bankability",
-    subbadges: ["Fortune Future 69", "AAA MSCI ESG Rating in 2025"],
+    subbadges: ["Fortune Future 50", "AAA MSCI ESG Rating in 2025"],
     stat: "75 GW⁺",
     statLabel: "India Shipments of PV Inverters",
     assetKey: "home.stats.banner",

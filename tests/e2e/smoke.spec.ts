@@ -55,9 +55,8 @@ test("Login page form validation and demo notice", async ({ page }) => {
   await emailInput.fill("user@sungrow.com");
   await expect(loginButton).toBeEnabled();
 
-  // Click login button -> triggers demo notice
+  // Click login button -> triggers error notice for non-existent user
   await loginButton.click();
-  const alertNotice = page.locator('.bg-orange-50[role="alert"]');
+  const alertNotice = page.getByRole("alert").filter({ hasText: "Invalid email or password" });
   await expect(alertNotice).toBeVisible();
-  await expect(alertNotice).toContainText("Sign-in is not available in this demo.");
 });

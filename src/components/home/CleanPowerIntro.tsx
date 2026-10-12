@@ -13,19 +13,18 @@ export function CleanPowerIntro() {
   const { cleanPower } = homeData;
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="pt-8 pb-20 lg:pb-28 bg-white">
       <Container>
-        {/* Section Heading with Orange Accent and Divider */}
-        <SectionHeading
-          tag={cleanPower.heading}
-          title=""
-          showDivider={true}
-          align="center"
-          className="mb-6"
-        />
+        {/* Section Heading: sentence case, ≈ 36 px, medium weight, colour #F27104 */}
+        <h2 className="text-[32px] sm:text-[36px] font-medium text-[#F27104] text-center mb-8 tracking-tight">
+          Clean Power for All
+        </h2>
 
-        {/* Scroll-linked Color Reveal Paragraph */}
-        <ScrollRevealText text={cleanPower.description} className="mb-16" />
+        {/* Scroll-linked Color Reveal Paragraph: weight 400, ≈ 20 px, centred, dark grey */}
+        <ScrollRevealText
+          text={cleanPower.description}
+          className="text-[18px] sm:text-[20px] font-normal text-neutral-800 leading-relaxed max-w-4xl mx-auto text-center mb-16"
+        />
 
         {/* 5 Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 pt-6 pb-12 border-b border-neutral-100">

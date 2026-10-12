@@ -1,19 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./slices/authSlice";
 import uiReducer from "./slices/uiSlice";
-import homeReducer from "./slices/homeSlice";
-import brandStoryReducer from "./slices/brandStorySlice";
-import sustainabilityReducer from "./slices/sustainabilitySlice";
-import loginReducer from "./slices/loginSlice";
+import registerReducer from "./slices/registerSlice";
+import { authApi } from "./api/authApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      auth: authReducer,
       ui: uiReducer,
-      home: homeReducer,
-      brandStory: brandStoryReducer,
-      sustainability: sustainabilityReducer,
-      login: loginReducer,
+      register: registerReducer,
+      [authApi.reducerPath]: authApi.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(authApi.middleware),
+    devTools: process.env.NODE_ENV !== "production",
   });
 };
 

@@ -1,18 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { homeData } from "@/data/home";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setActiveScenarioTab } from "@/store/slices/homeSlice";
 import { SmartImage } from "../ui/SmartImage";
 import { Container } from "../ui/Container";
 
 export function ScenarioTabs() {
-  const dispatch = useAppDispatch();
-  const activeTabId = useAppSelector((state) => state.home.activeScenarioTab);
   const { scenarios } = homeData;
+  const [activeTabId, setActiveTabId] = useState(scenarios.tabs[0]?.id || "utility");
 
   const currentTab =
     scenarios.tabs.find((t) => t.id === activeTabId) || scenarios.tabs[0]!;
@@ -99,7 +96,7 @@ export function ScenarioTabs() {
                     type="button"
                     role="tab"
                     aria-selected={isActive}
-                    onClick={() => dispatch(setActiveScenarioTab(tab.id))}
+                    onClick={() => setActiveTabId(tab.id)}
                     className={`px-4 sm:px-6 py-2 rounded-full transition-all duration-300 whitespace-nowrap cursor-pointer ${
                       isActive
                         ? "bg-white text-neutral-900 shadow-md font-semibold"

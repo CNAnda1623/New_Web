@@ -1,23 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { sustainabilityData } from "@/data/sustainability";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setActiveSection } from "@/store/slices/sustainabilitySlice";
+import { useAppSelector } from "@/store/hooks";
 import { Container } from "../ui/Container";
 
 export function SubNav() {
-  const dispatch = useAppDispatch();
-  const activeSection = useAppSelector(
-    (state) => state.sustainability.activeSection
-  );
-  const headerNavHidden = useAppSelector((state) => state.ui.headerNavHidden);
-
   const { subNav } = sustainabilityData;
+  const [activeSection, setActiveSection] = useState(subNav[0]?.id || "overview");
+  const navRowHidden = useAppSelector((state) => state.ui.navRowHidden);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
-    dispatch(setActiveSection(id));
+    setActiveSection(id);
     const element = document.getElementById(id);
     if (element) {
       const yOffset = -140; // account for sticky header & subnav
@@ -38,7 +33,7 @@ export function SubNav() {
         if (sec && sec.offsetTop <= scrollPos) {
           const item = subNav[i];
           if (item && item.id !== activeSection) {
-            dispatch(setActiveSection(item.id));
+            setActiveSection(item.id);
           }
           break;
         }
@@ -47,12 +42,12 @@ export function SubNav() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [subNav, activeSection, dispatch]);
+  }, [subNav, activeSection]);
 
   return (
     <div
       className={`sticky z-30 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-2xs transition-all duration-300 ${
-        headerNavHidden
+        navRowHidden
           ? "top-14 sm:top-16"
           : "top-14 sm:top-16 xl:top-28"
       }`}

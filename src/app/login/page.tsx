@@ -1,32 +1,104 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, AlertCircle } from "lucide-react";
+import { useAppSelector } from "@/store/hooks";
+import { selectAuthStatus } from "@/store/slices/authSlice";
 import {
-  toggleShowPassword,
-  setRememberMe,
-} from "@/store/slices/loginSlice";
+  useLoginMutation,
+  useLoginCodeMutation,
+  useSendCodeMutation,
+} from "@/store/api/authApi";
 import { SmartImage } from "@/components/ui/SmartImage";
 
 export default function LoginPage() {
-  const dispatch = useAppDispatch();
-  const showPassword = useAppSelector((state) => state.login.showPassword);
-  const rememberMe = useAppSelector((state) => state.login.rememberMe);
+  const router = useRouter();
+  const authStatus = useAppSelector(selectAuthStatus);
 
+  // RTK Query Mutations
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [loginCode, { isLoading: isLoginCodeLoading }] = useLoginCodeMutation();
+  const [sendCode, { isLoading: isSendCodeLoading }] = useSendCodeMutation();
+
+  // Mode & Form UI state kept local
+  const [mode, setMode] = useState<"password" | "code">("password");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Form Fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [submittedNotice, setSubmittedNotice] = useState(false);
+  const [code, setCode] = useState("");
 
-  // Email format check & non-empty password check
+  // Feedback & Cooldown
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [infoMsg, setInfoMsg] = useState<string | null>(null);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (authStatus === "authenticated") {
+      router.replace("/");
+    }
+  }, [authStatus, router]);
+
+  // Email format check
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isFormValid = isEmailValid && password.trim().length > 0;
+  const isPasswordValid = password.trim().length > 0;
+  const isCodeValid = code.trim().length >= 4;
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const isFormValid =
+    mode === "password" ? isEmailValid && isPasswordValid : isEmailValid && isCodeValid;
+
+  const loading = isLoginLoading || isLoginCodeLoading;
+
+  // Countdown timer for Code mode
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => {
+        setResendCooldown(resendCooldown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
+
+  // Send Code in Code Mode
+  const handleSendCode = async () => {
+    if (!isEmailValid || resendCooldown > 0 || isSendCodeLoading) return;
+    setErrorMsg(null);
+    setInfoMsg(null);
+    try {
+      await sendCode({ email, purpose: "login" }).unwrap();
+      setInfoMsg("Verification code sent to your email!");
+      setResendCooldown(60);
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string };
+      setErrorMsg(errorObj.message || "Failed to send code.");
+    }
+  };
+
+  // Submit Login
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
-    setSubmittedNotice(true);
+    if (!isFormValid || loading) return;
+
+    setErrorMsg(null);
+    setInfoMsg(null);
+
+    try {
+      if (mode === "password") {
+        await login({ email, password, rememberMe }).unwrap();
+        router.push("/");
+      } else {
+        await loginCode({ email, code, rememberMe }).unwrap();
+        router.push("/");
+      }
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string };
+      setErrorMsg(errorObj.message || "Invalid credentials. Please try again.");
+    }
   };
 
   return (
@@ -54,15 +126,22 @@ export default function LoginPage() {
           login
         </h1>
 
-        {submittedNotice && (
+        {/* Global Notifications */}
+        {errorMsg && (
           <div
             role="alert"
-            className="mb-4 p-3 rounded-xl bg-orange-50 border border-[#fe7900]/40 text-neutral-800 text-xs sm:text-sm animate-in fade-in duration-200"
+            className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs flex items-center gap-2"
           >
-            <p className="font-semibold text-[#fe7900]">Demo Notice</p>
-            <p className="text-neutral-600 mt-0.5">
-              Sign-in is not available in this demo.
-            </p>
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+        {infoMsg && (
+          <div
+            role="status"
+            className="mb-4 p-3 rounded-xl bg-green-50 border border-green-200 text-green-700 text-xs"
+          >
+            {infoMsg}
           </div>
         )}
 
@@ -82,86 +161,131 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setSubmittedNotice(false);
+                setErrorMsg(null);
               }}
               placeholder="sungrow@email.com"
               className="w-full pb-1.5 pt-0.5 bg-transparent border-0 border-b border-[#b2b2b2] text-sm sm:text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-[#fe7900] transition-colors rounded-none"
             />
           </div>
 
-          {/* Password Field with Underline Style & Eye Toggle */}
-          <div className="relative">
-            <label
-              htmlFor="login-password"
-              className="block text-xs font-normal text-neutral-700 mb-1"
-            >
-              Password
-            </label>
-            <div className="relative flex items-center">
-              <input
-                id="login-password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setSubmittedNotice(false);
-                }}
-                placeholder="Enter your Password"
-                className="w-full pb-1.5 pt-0.5 pr-10 bg-transparent border-0 border-b border-[#b2b2b2] text-sm sm:text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-[#fe7900] transition-colors rounded-none"
-              />
-              <button
-                type="button"
-                onClick={() => dispatch(toggleShowPassword())}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                aria-pressed={showPassword}
-                className="absolute right-0 bottom-1.5 text-neutral-500 hover:text-neutral-800 p-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#fe7900] rounded cursor-pointer"
+          {/* MODE 1: PASSWORD LOGIN */}
+          {mode === "password" && (
+            <>
+              {/* Password Field with Underline Style & Eye Toggle */}
+              <div className="relative">
+                <label
+                  htmlFor="login-password"
+                  className="block text-xs font-normal text-neutral-700 mb-1"
+                >
+                  Password
+                </label>
+                <div className="relative flex items-center">
+                  <input
+                    id="login-password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setErrorMsg(null);
+                    }}
+                    placeholder="Enter your Password"
+                    className="w-full pb-1.5 pt-0.5 pr-10 bg-transparent border-0 border-b border-[#b2b2b2] text-sm sm:text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-[#fe7900] transition-colors rounded-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                    className="absolute right-0 bottom-1.5 text-neutral-500 hover:text-neutral-800 p-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#fe7900] rounded cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                    ) : (
+                      <Eye className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember me & Forget Password row */}
+              <div className="flex items-center justify-between text-xs pt-0.5">
+                <label className="flex items-center gap-2 cursor-pointer text-neutral-700">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded-full text-[#fe7900] focus:ring-[#fe7900] border-[#b2b2b2] cursor-pointer"
+                  />
+                  <span className="text-neutral-800 text-xs">Remember me</span>
+                </label>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setErrorMsg("Please switch to 'Sign in Via email Verification' or contact support to reset.");
+                  }}
+                  className="text-[#fe7900] hover:underline text-xs font-medium cursor-pointer"
+                >
+                  Forget Password?
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* MODE 2: CODE LOGIN */}
+          {mode === "code" && (
+            <div className="relative">
+              <label
+                htmlFor="login-code"
+                className="block text-xs font-normal text-neutral-700 mb-1"
               >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                ) : (
-                  <Eye className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                )}
-              </button>
+                Code
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  id="login-code"
+                  type="text"
+                  value={code}
+                  onChange={(e) => {
+                    setCode(e.target.value);
+                    setErrorMsg(null);
+                  }}
+                  placeholder="Enter your Verification Code"
+                  className="w-full pb-1.5 pt-0.5 pr-24 bg-transparent border-0 border-b border-[#b2b2b2] text-sm sm:text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-[#fe7900] transition-colors rounded-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleSendCode}
+                  disabled={!isEmailValid || resendCooldown > 0 || isSendCodeLoading}
+                  className={`absolute right-0 bottom-1 text-xs font-semibold cursor-pointer ${
+                    !isEmailValid || resendCooldown > 0
+                      ? "text-neutral-400 cursor-not-allowed"
+                      : "text-[#fe7900] hover:text-[#d95e00]"
+                  }`}
+                >
+                  {isSendCodeLoading
+                    ? "Sending..."
+                    : resendCooldown > 0
+                    ? `Resend (${resendCooldown}s)`
+                    : "Send Code"}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Remember me & Forget Password row */}
-          <div className="flex items-center justify-between text-xs pt-0.5">
-            <label className="flex items-center gap-2 cursor-pointer text-neutral-700">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => dispatch(setRememberMe(e.target.checked))}
-                className="w-3.5 h-3.5 rounded text-[#fe7900] focus:ring-[#fe7900] border-[#b2b2b2] cursor-pointer"
-              />
-              <span className="text-neutral-800 text-xs">
-                Remember me
-              </span>
-            </label>
-
-            <a
-              href="https://www.sungrowpower.com/in/en"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#fe7900] hover:underline text-xs font-medium"
-            >
-              Forget Password?
-            </a>
-          </div>
-
-          {/* Login Primary Button */}
+          {/* Primary Login Button (Dark Gray #555555 / #606060) */}
           <div className="pt-1.5">
             <button
               type="submit"
-              disabled={!isFormValid}
+              disabled={!isFormValid || loading}
               className={`w-full h-11 sm:h-12 rounded-xl text-white text-sm sm:text-base font-semibold transition-all duration-200 cursor-pointer shadow-xs ${
-                isFormValid
+                isFormValid && !loading
                   ? "bg-[#555555] hover:bg-[#3f3f3f]"
                   : "bg-[#555555]/60 cursor-not-allowed"
               }`}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
           </div>
 
@@ -174,31 +298,47 @@ export default function LoginPage() {
             <div className="flex-1 h-[1px] bg-neutral-200" />
           </div>
 
-          {/* Secondary Button: Sign in Via email Verification */}
-          <button
-            type="button"
-            onClick={() => setSubmittedNotice(true)}
-            className="w-full h-11 sm:h-12 rounded-xl bg-[#fe7900] hover:bg-[#e56d00] text-white text-sm sm:text-base font-semibold transition-colors cursor-pointer shadow-xs"
-          >
-            Sign in Via email Verification
-          </button>
+          {/* Secondary Button: Switches between Code mode and Password mode */}
+          {mode === "password" ? (
+            <button
+              type="button"
+              onClick={() => {
+                setMode("code");
+                setErrorMsg(null);
+                setInfoMsg(null);
+              }}
+              className="w-full h-11 sm:h-12 rounded-xl bg-[#fe7900] hover:bg-[#e56d00] text-white text-sm sm:text-base font-semibold transition-colors cursor-pointer shadow-xs"
+            >
+              Sign in Via email Verification
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setMode("password");
+                setErrorMsg(null);
+                setInfoMsg(null);
+              }}
+              className="w-full h-11 sm:h-12 rounded-xl bg-[#fe7900] hover:bg-[#e56d00] text-white text-sm sm:text-base font-semibold transition-colors cursor-pointer shadow-xs"
+            >
+              Password Login
+            </button>
+          )}
 
           {/* Footer links: Sign Up & Return to Home */}
           <div className="pt-2 text-center space-y-1.5 text-xs text-neutral-700">
             <p>
               Do not have an account?{" "}
-              <a
-                href="https://www.sungrowpower.com/in/en"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/register"
                 className="text-[#fe7900] font-semibold hover:underline"
               >
                 Sign Up
-              </a>
+              </Link>
             </p>
             <p>
               <Link href="/" className="hover:text-[#fe7900] transition-colors">
-                Return to <span className="font-semibold">Home</span>
+                Return to <span className="font-semibold text-[#fe7900]">Home</span>
               </Link>
             </p>
           </div>
@@ -207,9 +347,8 @@ export default function LoginPage() {
 
       {/* 3. Page Footer: 2025 SUNGROW, Privacy, Contact US */}
       <footer className="w-full text-center py-2 sm:py-3 text-[11px] sm:text-xs text-neutral-600 font-normal">
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           <span>2025 SUNGROW. All Rights Reserved</span>
-          <span>·</span>
           <a
             href="https://www.sungrowpower.com/in/en/privacy-policy-terms"
             target="_blank"
@@ -218,7 +357,6 @@ export default function LoginPage() {
           >
             Privacy
           </a>
-          <span>·</span>
           <a
             href="https://www.sungrowpower.com/in/en/about-us/contact-us"
             target="_blank"

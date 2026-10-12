@@ -1,21 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { sustainabilityData } from "@/data/sustainability";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setActiveStrategyTab } from "@/store/slices/sustainabilitySlice";
 import { SectionHeading } from "../ui/SectionHeading";
 import { Button } from "../ui/Button";
 import { SmartImage } from "../ui/SmartImage";
 import { Container } from "../ui/Container";
 
 export function StrategyTabs() {
-  const dispatch = useAppDispatch();
-  const activeTabId = useAppSelector(
-    (state) => state.sustainability.activeStrategyTab
-  );
-
   const { strategy } = sustainabilityData;
+  const [activeTabId, setActiveTabId] = useState(strategy.tabs[0]?.id || "governance");
 
   const currentTab =
     strategy.tabs.find((t) => t.id === activeTabId) || strategy.tabs[0]!;
@@ -43,7 +37,7 @@ export function StrategyTabs() {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => dispatch(setActiveStrategyTab(tab.id))}
+                onClick={() => setActiveTabId(tab.id)}
                 className={`relative pb-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap cursor-pointer ${
                   isActive
                     ? "text-[#fe7900] font-semibold"

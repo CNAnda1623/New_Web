@@ -12,4 +12,5 @@ export const internalLinks = {
   brandStory: "/about-us/brand-story",
   sustainability: "/sustainability",
   login: "/login",
+  register: "/register",
 } as const;

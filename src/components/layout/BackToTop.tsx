@@ -1,11 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
-import { useAppSelector } from "@/store/hooks";
 
 export function BackToTop() {
-  const isVisible = useAppSelector((state) => state.ui.backToTopVisible);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setIsVisible(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   if (!isVisible) return null;
 
@@ -21,13 +29,9 @@ export function BackToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label="Back to top"
-      className="fixed bottom-6 right-6 z-40 flex items-center justify-center rounded-full bg-white transition-all duration-300 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fe7900]
-        /* Desktop: smaller outlined circle */
-        border border-[#fe7900] w-10 h-10 shadow-sm
-        /* Mobile: ~56px with soft shadow */
-        sm:w-11 sm:h-11 max-sm:w-14 max-sm:h-14 max-sm:shadow-lg max-sm:border-neutral-200"
+      className="fixed bottom-6 right-6 z-40 flex items-center justify-center rounded-full bg-white w-9 h-9 sm:w-9 sm:h-9 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 border border-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fe7900] cursor-pointer"
     >
-      <ArrowUp className="w-5 h-5 text-[#fe7900] stroke-[2.2]" />
+      <ArrowUp className="w-4 h-4 text-[#fe7900] stroke-[2.5]" />
     </button>
   );
 }

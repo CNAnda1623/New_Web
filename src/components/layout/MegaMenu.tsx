@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { type MegaMenuItem } from "@/data/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { setActiveMegaMenu } from "@/store/slices/uiSlice";
+import { closeMegaMenu } from "@/store/slices/uiSlice";
 
 export interface MegaMenuProps {
   item: MegaMenuItem;
@@ -20,7 +20,7 @@ export function MegaMenu({ item, isOpen, onClose }: MegaMenuProps) {
   }
 
   const handleLinkClick = () => {
-    dispatch(setActiveMegaMenu(null));
+    dispatch(closeMegaMenu());
     onClose();
   };
 

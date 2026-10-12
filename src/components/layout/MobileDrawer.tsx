@@ -6,12 +6,18 @@ import { X, ChevronDown, User, Search } from "lucide-react";
 import { navigationItems } from "@/data/navigation";
 import { internalLinks } from "@/lib/links";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setMobileNavOpen } from "@/store/slices/uiSlice";
+import { toggleMobileNav, selectMobileNavOpen } from "@/store/slices/uiSlice";
+import { selectAuthStatus, selectUser } from "@/store/slices/authSlice";
+import { useLogoutMutation } from "@/store/api/authApi";
 import { SmartImage } from "../ui/SmartImage";
 
 export function MobileDrawer() {
   const dispatch = useAppDispatch();
-  const isOpen = useAppSelector((state) => state.ui.mobileNavOpen);
+  const isOpen = useAppSelector(selectMobileNavOpen);
+  const authStatus = useAppSelector(selectAuthStatus);
+  const user = useAppSelector(selectUser);
+  const [logout] = useLogoutMutation();
+
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({});
 
   if (!isOpen) return null;
@@ -24,7 +30,17 @@ export function MobileDrawer() {
   };
 
   const closeDrawer = () => {
-    dispatch(setMobileNavOpen(false));
+    dispatch(toggleMobileNav());
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+    } catch {
+      // Ignore
+    } finally {
+      closeDrawer();
+    }
   };
 
   return (
@@ -67,25 +83,54 @@ export function MobileDrawer() {
       </div>
 
       {/* Login & Search Controls */}
-      <div className="p-5 flex items-center justify-between gap-3 border-b border-neutral-100 bg-neutral-50/50">
-        <Link
-          href={internalLinks.login}
-          onClick={closeDrawer}
-          className="flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-300 text-sm font-medium text-neutral-800 hover:border-[#fe7900] hover:text-[#fe7900] transition-colors"
-        >
-          <User className="w-4 h-4 text-neutral-600" />
-          <span>LOGIN</span>
-        </Link>
+      <div className="p-5 border-b border-neutral-100 bg-neutral-50/50">
+        {authStatus === "authenticated" && user ? (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#bf9a64] flex items-center justify-center text-white shrink-0 shadow-xs">
+                  <User className="w-5 h-5 fill-white text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-neutral-900">
+                    {user.name}
+                  </p>
+                  <p className="text-xs text-neutral-500 truncate max-w-[180px]">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-xs text-neutral-500 hover:text-red-600 transition-colors px-2 py-1 cursor-pointer"
+              >
+                Log out
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <Link
+              href={internalLinks.login}
+              onClick={closeDrawer}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-300 text-sm font-medium text-neutral-800 hover:border-[#fe7900] hover:text-[#fe7900] transition-colors"
+            >
+              <User className="w-4 h-4 text-neutral-600" />
+              <span>LOGIN</span>
+            </Link>
 
-        <a
-          href="https://www.sungrowpower.com/in/en/search-results"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-neutral-600 hover:text-neutral-900 text-sm"
-        >
-          <Search className="w-4 h-4" />
-          <span>Search</span>
-        </a>
+            <a
+              href="https://www.sungrowpower.com/in/en/search-results"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-neutral-600 hover:text-neutral-900 text-sm"
+            >
+              <Search className="w-4 h-4" />
+              <span>Search</span>
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Nav Accordion List */}

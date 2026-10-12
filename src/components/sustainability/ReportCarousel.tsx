@@ -1,21 +1,16 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { sustainabilityData } from "@/data/sustainability";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setActiveReportTab } from "@/store/slices/sustainabilitySlice";
 import { SectionHeading } from "../ui/SectionHeading";
 import { Button } from "../ui/Button";
 import { SmartImage } from "../ui/SmartImage";
 import { Container } from "../ui/Container";
 
 export function ReportCarousel() {
-  const dispatch = useAppDispatch();
-  const activeTab = useAppSelector(
-    (state) => state.sustainability.activeReportTab
-  );
+  const [activeTab, setActiveTab] = useState<"reports" | "policies">("reports");
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
@@ -45,7 +40,7 @@ export function ReportCarousel() {
         <div className="flex items-center justify-center gap-8 border-b border-neutral-100 pb-3 mb-12">
           <button
             type="button"
-            onClick={() => dispatch(setActiveReportTab("reports"))}
+            onClick={() => setActiveTab("reports")}
             className={`relative pb-2 text-sm sm:text-base font-medium transition-colors cursor-pointer ${
               activeTab === "reports"
                 ? "text-[#fe7900] font-semibold"
@@ -60,7 +55,7 @@ export function ReportCarousel() {
 
           <button
             type="button"
-            onClick={() => dispatch(setActiveReportTab("policies"))}
+            onClick={() => setActiveTab("policies")}
             className={`relative pb-2 text-sm sm:text-base font-medium transition-colors cursor-pointer ${
               activeTab === "policies"
                 ? "text-[#fe7900] font-semibold"

@@ -29,17 +29,6 @@ export function HeroMobileSlider() {
       ref={emblaRef}
     >
       <div className="flex h-full">
-        {/* Slide 0: Intro video */}
-        <div className="flex-[0_0_100%] min-w-0 h-full relative overflow-hidden isolate">
-          <SmartVideo
-            src={mobileVideo.src || undefined}
-            poster={mobileVideo.poster || undefined}
-            label="Hero video: set src in src/data/home.ts"
-            alt="Sungrow hero video"
-            className="absolute inset-0 w-full h-full object-cover object-center z-0"
-          />
-        </div>
-
         {/* Slide A: Forest with mist + 3 line goodwill text */}
         <div className="flex-[0_0_100%] min-w-0 h-full relative flex items-center justify-center isolate">
           <SmartImage

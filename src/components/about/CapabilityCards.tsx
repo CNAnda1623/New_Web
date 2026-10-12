@@ -3,16 +3,11 @@
 import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { brandStoryData } from "@/data/brandStory";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleCapability } from "@/store/slices/brandStorySlice";
 import { SmartImage } from "../ui/SmartImage";
 import { Container } from "../ui/Container";
 
 export function CapabilityCards() {
-  const dispatch = useAppDispatch();
-  const expandedId = useAppSelector(
-    (state) => state.brandStory.expandedCapabilityId
-  );
+  const [expandedId, setExpandedId] = useState<string | null>("r-and-d");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const { capabilities } = brandStoryData;
@@ -106,7 +101,7 @@ export function CapabilityCards() {
                 {/* Collapsed Row Header */}
                 <button
                   type="button"
-                  onClick={() => dispatch(toggleCapability(cap.id))}
+                  onClick={() => setExpandedId(expandedId === cap.id ? null : cap.id)}
                   className="w-full h-18 px-5 flex items-center justify-between text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fe7900]"
                   aria-expanded={isExpanded}
                 >
