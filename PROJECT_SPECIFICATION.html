@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Technical Specification & Viva Cheat Sheet</title>
+  <style>
+    @page {
+      margin: 18mm 16mm 18mm 16mm;
+      size: A4;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.55;
+      font-size: 13.5px;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 22px;
+      color: #0f172a;
+      border-bottom: 2.5px solid #2563eb;
+      padding-bottom: 8px;
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+    h2 {
+      font-size: 16px;
+      color: #1e3a8a;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 5px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 14px;
+      color: #0f172a;
+      margin-top: 14px;
+      margin-bottom: 4px;
+      page-break-after: avoid;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    blockquote {
+      background: #f8fafc;
+      border-left: 4px solid #2563eb;
+      margin: 8px 0 14px 0;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      font-style: italic;
+      color: #334155;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px 0;
+      font-size: 12.5px;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+    ul, ol {
+      margin: 6px 0 12px 0;
+      padding-left: 22px;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+    strong {
+      color: #0f172a;
+    }
+    code {
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      background-color: #f1f5f9;
+      color: #dc2626;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .qa-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    .qa-card h3 {
+      color: #1e40af;
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 13.5px;
+    }
+    .qa-card p {
+      margin-bottom: 0;
+      color: #334155;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 4px;
+      background-color: #dbeafe;
+      color: #1d4ed8;
+      margin-right: 4px;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 18px 0;
+    }
+    .avoid-break {
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Project Technical Specification & Viva / Presentation Cheat Sheet</h1>
+  <div class="subtitle">A concise overview of the technologies, algorithms, libraries, and design choices used in the Sungrow Web Application.</div>
+
+  <div class="avoid-break">
+    <h2>1. Quick Project Summary (Elevator Pitch)</h2>
+    <blockquote>
+      &ldquo;This is a full-stack enterprise web application replicating the Sungrow platform. It is built using <strong>Next.js 16 (App Router)</strong> and <strong>React 19</strong> on the frontend, with <strong>Tailwind CSS v4</strong> and <strong>Motion</strong> for animations, <strong>Redux Toolkit &amp; RTK Query</strong> for state and API caching, and a secure authentication engine using <strong>Argon2</strong>, <strong>JWTs in httpOnly cookies</strong>, and <strong>HMAC verification codes</strong>.&rdquo;
+    </blockquote>
+  </div>
+
+  <h2>2. Tech Stack &amp; Software Specifications</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">Layer</th>
+        <th style="width: 32%;">Technology</th>
+        <th>Why It Was Used</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Framework</strong></td>
+        <td><strong>Next.js 16 (Turbopack)</strong></td>
+        <td>Server-side rendering (SSR), optimized App Router, built-in API route handlers, high speed.</td>
+      </tr>
+      <tr>
+        <td><strong>UI Library</strong></td>
+        <td><strong>React 19</strong></td>
+        <td>Latest React features, Server Components, fast DOM rendering.</td>
+      </tr>
+      <tr>
+        <td><strong>Language</strong></td>
+        <td><strong>TypeScript 5 (Strict)</strong></td>
+        <td>Static typing, compile-time error checking, robust code quality.</td>
+      </tr>
+      <tr>
+        <td><strong>Styling</strong></td>
+        <td><strong>Tailwind CSS v4</strong></td>
+        <td>Utility-first, zero-runtime CSS, fully responsive design, dark/light themes.</td>
+      </tr>
+      <tr>
+        <td><strong>State Management</strong></td>
+        <td><strong>Redux Toolkit + RTK Query</strong></td>
+        <td>Centralized global store, automatic API caching, silent re-authentication, tag invalidation.</td>
+      </tr>
+      <tr>
+        <td><strong>Forms &amp; Validation</strong></td>
+        <td><strong>React Hook Form + Zod</strong></td>
+        <td>Controlled form state without re-render lag, schema-based client &amp; server validation.</td>
+      </tr>
+      <tr>
+        <td><strong>Animations</strong></td>
+        <td><strong>Motion (Framer Motion v14)</strong></td>
+        <td>Scroll reveals, curtain transitions, smooth mobile drawer slide-ins.</td>
+      </tr>
+      <tr>
+        <td><strong>Sliders/Carousels</strong></td>
+        <td><strong>Embla Carousel React</strong></td>
+        <td>Touch-friendly, lightweight, high-performance carousel with autoplay.</td>
+      </tr>
+      <tr>
+        <td><strong>Icons</strong></td>
+        <td><strong>Lucide React</strong></td>
+        <td>Clean, modern SVG icon set with tree-shaking support.</td>
+      </tr>
+      <tr>
+        <td><strong>Security &amp; Auth</strong></td>
+        <td><strong>Argon2 + Jose (JWT) + HMAC</strong></td>
+        <td>Industry-standard password hashing and cryptographically secure tokens.</td>
+      </tr>
+      <tr>
+        <td><strong>Testing</strong></td>
+        <td><strong>Vitest + Playwright</strong></td>
+        <td>Vitest for fast unit tests; Playwright for cross-browser end-to-end automation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Packages &amp; Libraries: What Each One Does</h2>
+  <ul>
+    <li><code>next</code> / <code>react</code> / <code>react-dom</code>: The core React web application and App Router server.</li>
+    <li><code>@reduxjs/toolkit</code> &amp; <code>react-redux</code>: Global state (<code>authSlice</code>, <code>uiSlice</code>, <code>registerSlice</code>) and <code>authApi</code> for backend endpoints.</li>
+    <li><code>motion</code>: Handles UI entrance animations, sticky scroll triggers, and tab transitions.</li>
+    <li><code>embla-carousel-react</code> &amp; <code>embla-carousel-autoplay</code>: Powers the responsive image and card sliders (e.g., Sustainability reports, milestone timelines).</li>
+    <li><code>react-hook-form</code> &amp; <code>@hookform/resolvers</code>: Manages form inputs, submit events, and validation errors cleanly without lag.</li>
+    <li><code>zod</code>: Declares validation schemas for email, passwords, login forms, and server payloads.</li>
+    <li><code>@node-rs/argon2</code>: High-speed native Argon2 password hasher.</li>
+    <li><code>jose</code>: Modern, lightweight JWT signing and verification library with zero external dependencies.</li>
+    <li><code>lucide-react</code>: Supplies navigation and status icons (Search, User, Chevron, Check, Alert, etc.).</li>
+    <li><code>clsx</code> &amp; <code>tailwind-merge</code>: Safely combines dynamic Tailwind CSS class names without collisions.</li>
+  </ul>
+
+  <h2>4. Key Algorithms &amp; Cryptographic Methods</h2>
+  <ol>
+    <li>
+      <strong>Password Hashing (Argon2id):</strong>
+      <br><em>Method:</em> <code>@node-rs/argon2</code>
+      <br><em>Why:</em> Argon2 is the winner of the Password Hashing Competition. It is memory-hard, making it highly resistant to GPU and ASIC brute-force attacks.
+    </li>
+    <li style="margin-top: 6px;">
+      <strong>Session Authentication (Dual-Token JWT HS256):</strong>
+      <br><em>Short-lived Access Token (15 min):</em> Carries user identity in memory/cookies for fast stateless API checks.
+      <br><em>Long-lived Refresh Token (30 days):</em> Used to obtain new access tokens without requiring re-login.
+      <br><em>Storage:</em> Stored in <code>httpOnly</code>, <code>SameSite=Lax</code>, <code>Secure</code> cookies to prevent XSS (Cross-Site Scripting) token theft.
+    </li>
+    <li style="margin-top: 6px;">
+      <strong>OTP / Verification Code Security (HMAC-SHA256):</strong>
+      <br><em>Method:</em> <code>crypto.createHmac('sha256', secret)</code>
+      <br><em>How:</em> Verification codes are combined with the user email and purpose, hashed with HMAC before storing, preventing plain-text exposure and timing attacks.
+    </li>
+    <li style="margin-top: 6px;">
+      <strong>Silent Refresh with Mutex Pattern (<code>baseQueryWithReauth</code>):</strong>
+      <br><em>Problem:</em> If multiple API calls fail with 401 at the same time, we shouldn't send multiple simultaneous refresh requests.
+      <br><em>Solution:</em> A Mutex lock holds concurrent requests until a single refresh request completes, then replays the failed requests transparently.
+    </li>
+  </ol>
+
+  <h2>5. Page-by-Page Feature Map</h2>
+  <ul>
+    <li><strong>Home (<code>/</code>):</strong> Hero scroll video sequence with pinned curtain transitions, scenario tabs, interactive solar product displays, news highlights.</li>
+    <li><strong>Brand Story (<code>/about-us/brand-story</code>):</strong> Interactive milestones carousel, full-bleed media banner, corporate footprint stats.</li>
+    <li><strong>C&amp;I PV Solution (<code>/solution/ci-pv-solution</code>):</strong> Commercial &amp; Industrial solar energy solutions, system architecture breakdown, contact lead form.</li>
+    <li><strong>Residential Solution (<code>/solution/residential-pv-ess-ev-charging-solution</code>):</strong> Residential PV + Energy Storage + EV Charging ecosystem showcase.</li>
+    <li><strong>Sustainability (<code>/sustainability</code>):</strong> ESG pillars (Environmental, Social, Governance), climate targets, ESG report download cards.</li>
+    <li><strong>Auth Flow (<code>/login</code> &amp; <code>/register</code>):</strong> Multi-tab login (Password or OTP verification code), multi-step registration flow (Country &rarr; Role &rarr; Email &rarr; Password), dialogs for Password Reset, Delete Account, and Logout.</li>
+  </ul>
+
+  <h2>6. Likely Invigilator Cross-Questions &amp; Quick Answers</h2>
+
+  <div class="qa-card">
+    <h3>Q1: &ldquo;Why did you choose Next.js App Router instead of standard React (Vite/CRA)?&rdquo;</h3>
+    <p><strong>Answer:</strong> &ldquo;Next.js App Router gives us Server-Side Rendering (SSR) for fast initial page loads and SEO optimization, plus built-in API Route handlers so we don't need a separate Express backend server.&rdquo;</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Q2: &ldquo;How is user authentication handled?&rdquo;</h3>
+    <p><strong>Answer:</strong> &ldquo;Using JWTs stored in <code>httpOnly</code> cookies. Access tokens expire after 15 minutes, while refresh tokens last 30 days. When an access token expires, our custom RTK Query base query triggers a silent refresh using a mutex pattern so the user stays logged in seamlessly.&rdquo;</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Q3: &ldquo;Why Argon2 instead of bcrypt for password hashing?&rdquo;</h3>
+    <p><strong>Answer:</strong> &ldquo;Argon2 is the modern industry standard and winner of the Password Hashing Competition. It provides superior memory-hardness against modern GPU-accelerated cracking compared to older algorithms like bcrypt or MD5.&rdquo;</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Q4: &ldquo;How do you prevent state lag on large forms?&rdquo;</h3>
+    <p><strong>Answer:</strong> &ldquo;We use <code>react-hook-form</code>, which utilizes uncontrolled inputs with React refs to prevent unnecessary component re-renders on every keystroke, coupled with <code>zod</code> for strict schema validation.&rdquo;</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Q5: &ldquo;Where is the data stored?&rdquo;</h3>
+    <p><strong>Answer:</strong> &ldquo;For this implementation, the data store uses an atomic JSON store (<code>store.ts</code>) on the server side to persist users and sessions locally without requiring external cloud database dependencies.&rdquo;</p>
+  </div>
+
+</body>
+</html>
