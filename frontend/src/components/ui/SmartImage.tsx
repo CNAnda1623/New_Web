@@ -23,6 +23,7 @@ export function SmartImage({
   priority,
   sizes,
   fill,
+  unoptimized,
   ...rest
 }: SmartImageProps) {
   const asset = assetKey ? getAsset(assetKey) : undefined;
@@ -59,6 +60,7 @@ export function SmartImage({
       sizes={sizes}
       priority={priority}
       className={className}
+      unoptimized={unoptimized ?? true}
       {...rest}
     />
   );

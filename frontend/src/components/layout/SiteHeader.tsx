@@ -161,7 +161,7 @@ export function SiteHeader() {
           <div className="max-w-[1400px] mx-auto px-8">
             <nav
               aria-label="Main Navigation"
-              className="flex items-center justify-center gap-8 h-12"
+              className="flex items-center justify-center gap-10 lg:gap-12 h-12"
             >
               {navigationItems.map((item) => {
                 if (item.isDirectLink && item.href) {
@@ -191,7 +191,16 @@ export function SiteHeader() {
                     <button
                       type="button"
                       aria-expanded={isActive}
-                      className={`text-sm font-medium transition-colors py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fe7900] rounded ${
+                      onClick={() => {
+                        if (isActive) {
+                          setHoveredItemId(null);
+                          dispatch(closeMegaMenu());
+                        } else {
+                          setHoveredItemId(item.id);
+                          dispatch(openMegaMenu(item.id));
+                        }
+                      }}
+                      className={`text-sm font-medium transition-colors py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#fe7900] rounded cursor-pointer ${
                         isActive
                           ? "text-[#fe7900]"
                           : "text-neutral-700 hover:text-[#fe7900]"

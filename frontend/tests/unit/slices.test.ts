@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import authReducer, {
+  logoutUser,
   selectAuthStatus,
   selectUser,
   selectIsAuthenticated,
@@ -94,6 +95,16 @@ describe("Redux Slices", () => {
         meta: { arg: { endpointName: "getMe" } },
       };
       const state = authReducer(initialState, action);
+      expect(state.status).toBe("anonymous");
+      expect(state.user).toBeNull();
+    });
+
+    it("handles logoutUser reducer action -> anonymous", () => {
+      const initialState: AuthState = {
+        status: "authenticated",
+        user: mockUser,
+      };
+      const state = authReducer(initialState, logoutUser());
       expect(state.status).toBe("anonymous");
       expect(state.user).toBeNull();
     });

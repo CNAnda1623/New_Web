@@ -210,6 +210,12 @@ export const homeData = {
         assetKey: "home.commitment.service",
         href: sungrowUrl("service-brand"),
       },
+      {
+        id: "excellence",
+        title: "Sustainable Excellence",
+        assetKey: "home.commitment.excellence",
+        href: sungrowUrl("sustainability"),
+      },
     ],
   },
 

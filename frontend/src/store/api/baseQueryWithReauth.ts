@@ -34,6 +34,7 @@ const SKIP_REFRESH_ENDPOINTS = [
   "/register",
   "/send-code",
   "/refresh",
+  "/logout",
 ];
 
 // Shared mutex for simultaneous 401s

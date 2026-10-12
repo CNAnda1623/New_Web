@@ -8,7 +8,7 @@ import {
   openAccountDialog,
   selectAccountMenuOpen,
 } from "@/store/slices/uiSlice";
-import { selectUser } from "@/store/slices/authSlice";
+import { selectUser, logoutUser } from "@/store/slices/authSlice";
 import { useLogoutMutation } from "@/store/api/authApi";
 
 export function UserMenu() {
@@ -52,6 +52,7 @@ export function UserMenu() {
     } catch {
       // Logout failure handled gracefully
     } finally {
+      dispatch(logoutUser());
       dispatch(setAccountMenuOpen(false));
     }
   };

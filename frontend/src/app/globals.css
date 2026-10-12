@@ -51,3 +51,22 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes marquee-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-slide {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide 32s linear infinite;
+}
+
+.animate-marquee-slide:hover {
+  animation-play-state: paused;
+}

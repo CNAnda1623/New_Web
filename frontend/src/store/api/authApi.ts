@@ -114,9 +114,10 @@ export const authApi = createApi({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(authApi.util.resetApiState());
         } catch {
-          // If network failed, still reset state
+          // Ignore network errors on logout
+        } finally {
+          dispatch({ type: "auth/logoutUser" });
           dispatch(authApi.util.resetApiState());
         }
       },

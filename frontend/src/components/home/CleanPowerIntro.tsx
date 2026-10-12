@@ -12,10 +12,10 @@ export function CleanPowerIntro() {
   const { cleanPower } = homeData;
 
   return (
-    <section className="pt-8 pb-20 lg:pb-28 bg-white">
+    <section className="pt-8 pb-16 lg:pb-20 bg-white">
       <Container>
         {/* Section Heading: sentence case, ≈ 36 px, medium weight, colour #F27104 */}
-        <h2 className="text-[32px] sm:text-[36px] font-medium text-[#F27104] text-center mb-8 tracking-tight">
+        <h2 className="text-[32px] sm:text-[36px] font-medium text-[#fe7900] text-center mb-8 tracking-tight">
           Clean Power for All
         </h2>
 
@@ -26,7 +26,7 @@ export function CleanPowerIntro() {
         />
 
         {/* 5 Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 pt-6 pb-12 border-b border-neutral-100">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 pt-6 pb-10 border-b border-neutral-100">
           {cleanPower.stats.map((stat) => (
             <div
               key={stat.id}
@@ -59,21 +59,24 @@ export function CleanPowerIntro() {
           ))}
         </div>
 
-        {/* Footnotes & CTA Button */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="text-[11px] text-neutral-400 font-light space-y-0.5 text-center sm:text-left">
-            {cleanPower.footnotes.map((fn, i) => (
-              <p key={i}>{fn}</p>
-            ))}
-          </div>
+        {/* Centered Footnotes */}
+        <div className="mt-6 text-[11px] text-neutral-400 font-light space-y-1 text-center">
+          {cleanPower.footnotes.map((fn, i) => (
+            <p key={i}>{fn}</p>
+          ))}
+        </div>
 
+        {/* Centered CTA Button and Orange Vertical Accent Line */}
+        <div className="mt-12 flex flex-col items-center">
           <Button
             href={cleanPower.cta.href}
             variant="outline-orange"
             size="md"
+            className="rounded-full px-8 py-2.5 font-medium"
           >
             {cleanPower.cta.label}
           </Button>
+          <div className="w-0.5 h-12 bg-[#fe7900] mt-8" />
         </div>
       </Container>
     </section>

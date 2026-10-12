@@ -17,7 +17,12 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser: (state) => {
+      state.status = "anonymous";
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // 1. Session established: getMe fulfilled
@@ -55,6 +60,8 @@ export const authSlice = createSlice({
       );
   },
 });
+
+export const { logoutUser } = authSlice.actions;
 
 export const selectAuthStatus = (state: RootState): AuthStatus =>
   state.auth.status;

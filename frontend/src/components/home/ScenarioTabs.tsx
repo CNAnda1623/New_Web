@@ -9,13 +9,13 @@ import { Container } from "../ui/Container";
 
 export function ScenarioTabs() {
   const { scenarios } = homeData;
-  const [activeTabId, setActiveTabId] = useState(scenarios.tabs[0]?.id || "utility");
+  const [activeTabId, setActiveTabId] = useState(scenarios.tabs[0]?.id || "for-home");
 
   const currentTab =
     scenarios.tabs.find((t) => t.id === activeTabId) || scenarios.tabs[0]!;
 
   return (
-    <section className="relative w-full min-h-[650px] lg:min-h-[800px] flex flex-col justify-between overflow-hidden bg-neutral-900 py-16 lg:py-20 text-white">
+    <section className="relative w-full min-h-[680px] lg:min-h-[820px] flex flex-col justify-between overflow-hidden bg-neutral-900 py-10 lg:py-14 text-white">
       {/* Background Crossfade Images */}
       {scenarios.tabs.map((tab) => {
         const isActive = tab.id === currentTab.id;
@@ -23,72 +23,84 @@ export function ScenarioTabs() {
           <div
             key={tab.id}
             className={`absolute inset-0 transition-opacity duration-700 ease-in-out isolate ${
-              isActive ? "opacity-100" : "opacity-0 pointer-events-none"
+              isActive ? "opacity-100 z-0" : "opacity-0 pointer-events-none -z-10"
             }`}
           >
             <SmartImage
               assetKey={tab.bgAssetKey}
               fill
               sizes="100vw"
-              className="object-cover object-center brightness-[0.65] z-0"
+              className="object-cover object-center brightness-95"
               alt={tab.title}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/60 z-10 pointer-events-none" />
+            {/* Soft left vignette to guarantee text legibility while keeping imagery vibrant */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none" />
           </div>
         );
       })}
 
-      {/* Top Labels and Main Title */}
-      <Container className="relative z-10 pt-8">
-        <span className="inline-block text-xs uppercase tracking-widest text-[#fe7900] font-semibold mb-3">
-          {scenarios.label}
-        </span>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white mb-8">
-          {currentTab.title}
-        </h2>
+      {/* Top Centered Category Label */}
+      <div className="relative z-10 text-center pt-2 sm:pt-4">
+        <div className="inline-flex items-center gap-8 text-sm sm:text-base tracking-wide drop-shadow">
+          <span className="font-semibold text-white">Customer Scenarios</span>
+          <span className="font-normal text-white/60">Business Areas</span>
+        </div>
+      </div>
 
-        {/* Links with Orange Chevrons (List down format) */}
-        <div className="flex flex-col gap-3.5 sm:gap-4 max-w-fit">
-          {currentTab.links.map((link, idx) => {
-            const content = (
-              <span className="inline-flex items-center gap-2 text-sm sm:text-base font-medium text-white/90 hover:text-[#fe7900] transition-colors group">
-                <span>{link.label}</span>
-                <ChevronRight className="w-4 h-4 text-[#fe7900] group-hover:translate-x-1 transition-transform" />
-              </span>
-            );
+      {/* Middle Left Content: Active Tab Title + Chevrons */}
+      <Container className="relative z-10 py-10 lg:py-16">
+        <div className="max-w-xl">
+          <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-normal tracking-tight text-white mb-8 sm:mb-10 flex items-center gap-2 drop-shadow">
+            <span>{currentTab.title}</span>
+            <span className="text-[#fe7900] text-3xl sm:text-4xl lg:text-5xl font-light leading-none select-none">
+              &gt;
+            </span>
+          </h2>
 
-            return link.isLocal ? (
-              <Link key={idx} href={link.href}>
-                {content}
-              </Link>
-            ) : (
-              <a
-                key={idx}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {content}
-              </a>
-            );
-          })}
+          {/* Links with Orange Chevrons */}
+          <div className="flex flex-col gap-4 sm:gap-5 max-w-fit">
+            {currentTab.links.map((link, idx) => {
+              const content = (
+                <span className="inline-flex items-center gap-2.5 text-base sm:text-lg font-normal text-white/95 hover:text-[#fe7900] transition-colors group">
+                  <span>{link.label}</span>
+                  <ChevronRight className="w-4 h-4 text-[#fe7900] group-hover:translate-x-1 transition-transform" />
+                </span>
+              );
+
+              return link.isLocal ? (
+                <Link key={idx} href={link.href}>
+                  {content}
+                </Link>
+              ) : (
+                <a
+                  key={idx}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {content}
+                </a>
+              );
+            })}
+          </div>
         </div>
       </Container>
 
-      {/* Bottom Pill Tab Bar */}
-      <div className="relative z-10 mt-16 px-4">
-        <div className="max-w-fit mx-auto overflow-x-auto py-2 no-scrollbar">
+      {/* Bottom Floating Pill Dock Tab Bar */}
+      <div className="relative z-10 pb-4 sm:pb-6 px-4 sm:px-6 lg:px-8 w-full">
+        <div className="max-w-6xl mx-auto">
           <div
             role="tablist"
             aria-label="Customer Scenarios and Business Areas"
-            className="inline-flex items-center bg-black/60 backdrop-blur-md rounded-full p-1.5 border border-white/10 shadow-lg text-xs sm:text-sm font-medium"
+            className="w-full bg-[#52585e]/80 backdrop-blur-md rounded-2xl p-1.5 sm:p-2 flex items-center justify-between border border-white/10 shadow-2xl overflow-x-auto no-scrollbar gap-1 sm:gap-2"
           >
             {scenarios.tabs.map((tab, idx) => {
               const isActive = tab.id === currentTab.id;
               return (
                 <React.Fragment key={tab.id}>
                   {idx > 0 && (
-                    <span className="text-white/20 px-1 select-none hidden sm:inline">
+                    <span className="text-white/20 select-none hidden lg:inline px-1">
                       |
                     </span>
                   )}
@@ -97,10 +109,10 @@ export function ScenarioTabs() {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => setActiveTabId(tab.id)}
-                    className={`px-4 sm:px-6 py-2 rounded-full transition-all duration-300 whitespace-nowrap cursor-pointer ${
+                    className={`flex-1 min-w-[120px] sm:min-w-[140px] py-3 sm:py-3.5 px-3 sm:px-6 rounded-xl transition-all duration-300 text-xs sm:text-sm lg:text-base whitespace-nowrap cursor-pointer text-center ${
                       isActive
-                        ? "bg-white text-neutral-900 shadow-md font-semibold"
-                        : "text-white/70 hover:text-white hover:bg-white/10"
+                        ? "bg-white text-neutral-900 font-semibold shadow-md"
+                        : "text-white/80 hover:text-white hover:bg-white/10 font-normal"
                     }`}
                   >
                     {tab.label}

@@ -42,6 +42,28 @@ export async function setAuthCookies(
 
 export async function clearAuthCookies(): Promise<void> {
   const cookieStore = await cookies();
+  // Clear access token cookie at "/"
+  cookieStore.set({
+    name: "sg_at",
+    value: "",
+    path: "/",
+    maxAge: 0,
+    expires: new Date(0),
+  });
   cookieStore.delete("sg_at");
+
+  // Clear refresh token cookie at "/api/auth"
+  cookieStore.set({
+    name: "sg_rt",
+    value: "",
+    path: "/api/auth",
+    maxAge: 0,
+    expires: new Date(0),
+  });
+  cookieStore.delete({
+    name: "sg_rt",
+    path: "/api/auth",
+  });
+  // Also delete at root path in case legacy cookie was set there
   cookieStore.delete("sg_rt");
 }

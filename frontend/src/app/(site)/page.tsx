@@ -4,7 +4,9 @@ import { CleanPowerIntro } from "@/components/home/CleanPowerIntro";
 import { ScenarioTabs } from "@/components/home/ScenarioTabs";
 import { CommitmentCarousel } from "@/components/home/CommitmentCarousel";
 import { StackedPanels } from "@/components/home/StackedPanels";
+import { ClientsWorldSection } from "@/components/home/ClientsWorldSection";
 import { NewsGrid } from "@/components/home/NewsGrid";
+import { ClientsLogoSlider } from "@/components/home/ClientsLogoSlider";
 import { FollowBar } from "@/components/layout/FollowBar";
 
 export const metadata: Metadata = {
@@ -21,7 +23,9 @@ export default function HomePage() {
       <ScenarioTabs />
       <CommitmentCarousel />
       <StackedPanels />
+      <ClientsWorldSection />
       <NewsGrid />
+      <ClientsLogoSlider />
       <FollowBar />
     </>
   );

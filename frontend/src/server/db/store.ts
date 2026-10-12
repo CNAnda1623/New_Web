@@ -238,3 +238,10 @@ export async function verifyAndConsumeRefreshToken(
 
   return findUserById(record.userId);
 }
+
+export function revokeRefreshToken(jti: string): void {
+  if (state.tokens[jti]) {
+    delete state.tokens[jti];
+    saveToDisk(state);
+  }
+}

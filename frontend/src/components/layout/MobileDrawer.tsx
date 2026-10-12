@@ -7,7 +7,7 @@ import { navigationItems } from "@/data/navigation";
 import { internalLinks } from "@/lib/links";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleMobileNav, selectMobileNavOpen } from "@/store/slices/uiSlice";
-import { selectAuthStatus, selectUser } from "@/store/slices/authSlice";
+import { selectAuthStatus, selectUser, logoutUser } from "@/store/slices/authSlice";
 import { useLogoutMutation } from "@/store/api/authApi";
 import { SmartImage } from "../ui/SmartImage";
 
@@ -39,6 +39,7 @@ export function MobileDrawer() {
     } catch {
       // Ignore
     } finally {
+      dispatch(logoutUser());
       closeDrawer();
     }
   };
