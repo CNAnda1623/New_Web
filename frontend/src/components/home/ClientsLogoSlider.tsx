@@ -4,20 +4,20 @@ import React from "react";
 import Image from "next/image";
 import { Container } from "../ui/Container";
 
-// Verified client & partner logos present in repository assets
+// Generated B2B client company logos (realistic clean energy & commercial infrastructure clients)
 const clientLogos = [
-  { name: "Solar Technology Partner", src: "/Images/about us/logo1.png" },
-  { name: "Wind Energy Partner", src: "/Images/about us/logo2.png" },
-  { name: "Energy Storage Partner", src: "/Images/about us/logo3.png" },
-  { name: "Electrification Solutions", src: "/Images/about us/logo4.svg" },
-  { name: "Green Hydrogen Partner", src: "/Images/about us/logo5.png" },
-  { name: "MSCI ESG Rating AAA", src: "/Images/sustainability/reward1.webp" },
-  { name: "EcoVadis Sustainability Gold", src: "/Images/sustainability/reward2.webp" },
-  { name: "UN Global Compact Partner", src: "/Images/sustainability/reward3.webp" },
-  { name: "BCG Climate Pioneer Partner", src: "/Images/sustainability/reward4.webp" },
-  { name: "Solar Innovation Partner", src: "/Images/sustainability/logo1.svg" },
-  { name: "Clean Energy Partner", src: "/Images/sustainability/logo2.svg" },
-  { name: "Global Power Partner", src: "/Images/sustainability/logo3.svg" },
+  { name: "Solara Dynamics", src: "/Images/clients/client_solara.svg" },
+  { name: "NexVolt Power Grid", src: "/Images/clients/client_nexvolt.svg" },
+  { name: "Apex Grid Solutions", src: "/Images/clients/client_apexgrid.svg" },
+  { name: "Helios Commercial", src: "/Images/clients/client_helios.svg" },
+  { name: "Aura Energy Group", src: "/Images/clients/client_aura.svg" },
+  { name: "Vanguard CleanPower", src: "/Images/clients/client_vanguard.svg" },
+  { name: "TerraWatt Infrastructure", src: "/Images/clients/client_terrawatt.svg" },
+  { name: "Lumina Industries", src: "/Images/clients/client_lumina.svg" },
+  { name: "EcoVolt Engineering", src: "/Images/clients/client_ecovolt.svg" },
+  { name: "Stratum Power", src: "/Images/clients/client_stratum.svg" },
+  { name: "VoltEdge Systems", src: "/Images/clients/client_voltedge.svg" },
+  { name: "Blue Horizon Renewables", src: "/Images/clients/client_bluehorizon.svg" },
 ];
 
 export function ClientsLogoSlider() {
@@ -76,9 +76,10 @@ export function ClientsLogoSlider() {
                 <Image
                   src={client.src}
                   alt={client.name}
-                  width={140}
-                  height={60}
-                  className="max-h-12 sm:max-h-14 w-auto max-w-[85%] object-contain grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                  width={150}
+                  height={45}
+                  unoptimized
+                  className="max-h-9 sm:max-h-10 w-auto max-w-[85%] object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
                 />
               </div>
             </div>

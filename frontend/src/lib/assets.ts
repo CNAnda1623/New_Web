@@ -156,7 +156,7 @@ export const assets: Record<string, AssetEntry> = {
     kind: "image",
     src: "/Images/Home/scenario_home.jpg",
     width: 1920,
-    height: 1150,
+    height: 1080,
     alt: "For Home Scenario",
   },
   "home.scenarios.business": {

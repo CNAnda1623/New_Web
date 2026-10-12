@@ -22,7 +22,7 @@ export function ScenarioTabs() {
         return (
           <div
             key={tab.id}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out isolate ${
+            className={`absolute inset-0 transition-opacity duration-500 ease-in-out isolate ${
               isActive ? "opacity-100 z-0" : "opacity-0 pointer-events-none -z-10"
             }`}
           >
@@ -108,6 +108,7 @@ export function ScenarioTabs() {
                     type="button"
                     role="tab"
                     aria-selected={isActive}
+                    onMouseEnter={() => setActiveTabId(tab.id)}
                     onClick={() => setActiveTabId(tab.id)}
                     className={`flex-1 min-w-[120px] sm:min-w-[140px] py-3 sm:py-3.5 px-3 sm:px-6 rounded-xl transition-all duration-300 text-xs sm:text-sm lg:text-base whitespace-nowrap cursor-pointer text-center ${
                       isActive
