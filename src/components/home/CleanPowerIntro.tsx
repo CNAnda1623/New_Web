@@ -1,0 +1,83 @@
+"use client";
+
+import React from "react";
+import { homeData } from "@/data/home";
+import { SectionHeading } from "../ui/SectionHeading";
+import { ScrollRevealText } from "../ui/ScrollRevealText";
+import { Counter } from "../ui/Counter";
+import { Button } from "../ui/Button";
+import { SmartImage } from "../ui/SmartImage";
+import { Container } from "../ui/Container";
+
+export function CleanPowerIntro() {
+  const { cleanPower } = homeData;
+
+  return (
+    <section className="py-20 lg:py-28 bg-white">
+      <Container>
+        {/* Section Heading with Orange Accent and Divider */}
+        <SectionHeading
+          tag={cleanPower.heading}
+          title=""
+          showDivider={true}
+          align="center"
+          className="mb-6"
+        />
+
+        {/* Scroll-linked Color Reveal Paragraph */}
+        <ScrollRevealText text={cleanPower.description} className="mb-16" />
+
+        {/* 5 Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 pt-6 pb-12 border-b border-neutral-100">
+          {cleanPower.stats.map((stat) => (
+            <div
+              key={stat.id}
+              className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-neutral-50/70 transition-colors"
+            >
+              <div className="w-12 h-12 mb-4 flex items-center justify-center">
+                <SmartImage
+                  assetKey={stat.iconAsset}
+                  src={stat.src}
+                  width={48}
+                  height={48}
+                  className="w-10 h-10 object-contain text-[#fe7900]"
+                  alt={stat.label}
+                />
+              </div>
+
+              <div className="text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight mb-2">
+                <Counter
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  isStatic={stat.isStatic}
+                  staticText={stat.staticText}
+                />
+              </div>
+
+              <p className="text-xs sm:text-sm text-neutral-500 font-light leading-snug max-w-[180px]">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Footnotes & CTA Button */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="text-[11px] text-neutral-400 font-light space-y-0.5 text-center sm:text-left">
+            {cleanPower.footnotes.map((fn, i) => (
+              <p key={i}>{fn}</p>
+            ))}
+          </div>
+
+          <Button
+            href={cleanPower.cta.href}
+            variant="outline-orange"
+            size="md"
+          >
+            {cleanPower.cta.label}
+          </Button>
+        </div>
+      </Container>
+    </section>
+  );
+}
