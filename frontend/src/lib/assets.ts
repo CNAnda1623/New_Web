@@ -258,10 +258,10 @@ export const assets: Record<string, AssetEntry> = {
   "home.map": {
     id: "H-map",
     kind: "image",
-    src: "/Images/Home/map.jpeg",
-    width: 1600,
-    height: 785,
-    alt: "Our Clients in the World Map",
+    src: "/Images/Home/map.png",
+    width: 676,
+    height: 687,
+    alt: "NCC Limited Pan India Presence Map",
   },
   "home.news.1": {
     id: "H-06a",

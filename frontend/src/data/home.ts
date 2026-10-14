@@ -252,6 +252,28 @@ export const homeData = {
     ],
   },
 
+  presence: {
+    eyebrow: "OUR PRESENCE",
+    heading: "Encompassing diverse areas of construction pan India",
+    description:
+      "NCC Limited has made a mark in the country as one of the largest listed companies in terms of revenue with proven expertise in buildings, transportation, water and environment, irrigation, electrical(T&D), mining and railways sectors. NCC Limited has expanded its footprint to have a pan India presence with offices across nine cities – Ahmedabad, Amaravati, Bengaluru, Delhi, Lucknow, Mumbai, Pune, Kolkata, and Patna with headquarters located at Hyderabad.",
+    stat: {
+      value: 160,
+      suffix: "+",
+      label: "Active projects across India",
+    },
+    cta: {
+      label: "KNOW MORE",
+      href: "/about-us",
+    },
+    image: {
+      src: "/Images/Home/map.png",
+      alt: "NCC Limited Pan India Presence Map",
+      width: 676,
+      height: 687,
+    },
+  },
+
   news: {
     heading: "Trending News & Events",
     featured: {
